@@ -1,7 +1,7 @@
 "use strict";
-const Server = require('./index');
+const KoaGeneratorServer = require('./generatorServer');
 const debug = require('debug')(`KoaGeneratorServer:LLS test: `);
-const app = new Server.KoaGeneratorServer();
+const app = new KoaGeneratorServer('KoaGeneratorServer');
 
 app.use(function *(next) {
   debug('this first middleware exec start!');

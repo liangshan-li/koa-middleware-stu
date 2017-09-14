@@ -1,43 +1,45 @@
 "use strict";
 const co = require('co');
 const debug = require('debug')('KoaGeneratorServer:LLS ');
+const Server = require('./server');
 
-class KoaGeneratorServer {
+class KoaGeneratorServer extends Server {
 
-  constructor() {
-    this.middlewares = [];
+  constructor(props) {
+    super(props);
   }
 
   use(fun) {
-    if (!fun) throw new Error('middleware fun must be exists!');
+    return super.use(fun);
+  }
+
+  validator(fun) {
     if ('GeneratorFunction' !== fun.constructor.name) throw new Error('middleware fun must be a generator function!');
-    this.middlewares.push(fun);
-    return this; //方便链式调用
   }
 
   run() {
-    debug(`========> server start run <============`);
-    this.exec().then(() => {
-      debug(`============> server end run <============`);
-    }).catch(() => {
-      debug(`============> server run exists error <============`);
-    });
+    debug(`====================> ${this.name} be ready to run  <=================`);
+    return super.run();
   }
 
   exec() {
-    debug(`============> start exec middleware <============`);
-    return co(this.gen()).then(() => {
-      debug(`============> end exec middleware <============`);
-    });
+    debug(`====================> ${this.name} be ready to exec  <=================`);
+    return super.exec();
   }
 
   * gen() {
-    let next = function *() {};
+    let next = function* () {
+    };
     let idx = this.middlewares.length;
     while (idx--) {
       next = this.middlewares[idx].call(this, next);
     }
-    yield *next;
+    yield* next;
+  }
+
+  genPromise() {
+    debug(`====================> ${this.name} be ready to gen Promise  <=================`);
+    return co(this.gen()).then(() => 'success and end');
   }
 
 }

@@ -1,67 +1,52 @@
 "use strict";
-const co = require('co');
-const debug = require('debug')('Koa middleware Server test:LLS');
+const debug = require('debug')('KoaMiddlewareServer test:LLS');
 
 class Server {
-  constructor() {
+  constructor(name) {
     this.middlewares = [];
+    this.name = name;
   }
 
   use(fun) {
+    if (typeof fun !== 'function') throw new Error('fun must be a function!');
+    debug(`fun name is ${fun.constructor.name}`);
+    this.validator(fun);
+    this.middlewares.push(fun);
+    return this;  //链式调用
+  }
 
+  validator(fun) {
+    debug(`this is empty validator!`);
   }
 
   run() {
-    debug(`========> server start run <============`);
-    this.exec().then(() => {
-      debug(`============> server end run <============`);
+    const start = Date.now();
+    debug(`========> ${this.name} server start run <============`);
+    return this.exec().then(() => {
+      debug(`============> ${this.name}  server end run <============`);
+    }).catch(() => {
+      debug(`============> server run exists error <============`);
+    }).then(() => {
+      const ms = Date.now() - start;
+      debug(`================>     time is ${ms}ms      <================`);
+      debug(`============================================================`);
+      debug(`============================================================`);
+      debug(`===============> ${this.name}  is finished! <===============`);
+      debug(`============================================================`);
+      debug(`============================================================`);
     });
   }
 
   exec() {
-    debug(`============> start exec middleware <============`);
-    return co(this.gen()).then(() => {
-      debug(`============> end exec middleware <============`);
+    debug(`============> ${this.name}  start exec middleware  <============`);
+    return this.genPromise().then((res) => {
+      debug(`============> ${this.name}  exec result ===> ${res} <============`);
+      debug(`============> ${this.name}  end exec middleware    <============`);
     });
   }
 
-  contentResole() {
-
-  }
-
-
-  co(gen) {
-    var ctx = this;
-
-    return new Promise(function(resolve, reject) {
-      if (typeof gen === 'function') gen = gen.call(ctx);
-      if (!gen || typeof gen.next !== 'function') return resolve(gen);
-
-      onFulfilled();
-      function onFulfilled(res) {
-        var ret;
-        try {
-          ret = gen.next(res);
-        } catch (e) {
-          return reject(e);
-        }
-        next(ret);
-      }
-    });
-  }
-
-  next(ret) {
-    if (ret.done) return resolve(ret.value);
-    var value = toPromise.call(ctx, ret.value);
-    if (value && isPromise(value)) return value.then(onFulfilled, onRejected);
-    return onRejected(
-      new TypeError(
-        'You may only yield a function, promise, generator, array, or object, '
-        + 'but the following object was passed: "'
-        + String(ret.value)
-        + '"'
-      )
-    );
+  genPromise() {
+    return Promise.resolve('nothing to do !');
   }
 
 }

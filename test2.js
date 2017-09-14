@@ -1,8 +1,8 @@
 "use strict";
-require('babel-register');
-const Server = require('./index');
+require('babel-core/register');
+const KoaAsyncServer     = require('./asyncServer');
 const debug = require('debug')(`KoaAsyncServer:LLS test`);
-const app = new Server.KoaAsyncServer();
+const app = new KoaAsyncServer('KoaAsyncServer');
 
 app.use(async function (context, next) {
   debug('this first middleware exec start!');
