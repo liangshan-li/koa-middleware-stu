@@ -1,0 +1,22 @@
+{
+  "name": "koa-middle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "make"
+  },
+  "keywords": [
+    "koa",
+    "middleware"
+  ],
+  "author": "lls",
+  "license": "ISC",
+  "dependencies": {
+    "babel-preset-env": "^1.6.0",
+    "babel-register": "^6.26.0",
+    "co": "^4.6.0",
+    "debug": "^3.0.1"
+  }
+}
