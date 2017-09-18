@@ -1,4 +1,4 @@
-.PHONY: run all
+.PHONY: run all clean
 all:  install  exec1 exec2
 
 install:

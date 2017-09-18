@@ -7,6 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "make all"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yongyulixiangzhihe/koa-middleware-stu.git"
+  },
   "keywords": [
     "koa",
     "middleware"

@@ -29,9 +29,11 @@ class KoaAsyncServer extends Server{
     context.exec = "this is exec!";
 
     return this.toPromises(context).then(() => {
+      this.count = -1;
       debug(`=====> ${this.name} exec res ==> ${JSON.stringify(context, null, 2)} <=====`);
       debug(`==================> ${this.name} end exec finished <===================`);
     }).catch((err) => {
+      this.count = -1;
       debug(`=====>  ${this.name} exec exists error ==> ${JSON.stringify(err, null, 2)} <====`);
     });
   }
@@ -48,8 +50,8 @@ class KoaAsyncServer extends Server{
   }
 
   toPromises(context, next) {
-    if (this.middlewares.length === 0) return;
     if (!Array.isArray(this.middlewares)) throw new Error('The middlewares stack must be an array!');
+    if (this.middlewares.length) return Promise.resolve();
     for (let fun of this.middlewares) {
       if (typeof fun !== 'function') throw new Error('The middlewares  must be composed of functions!');
     }
