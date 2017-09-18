@@ -49,9 +49,9 @@ class KoaAsyncServer extends Server{
 
   toPromises(context, next) {
     if (this.middlewares.length === 0) return;
-    if (!Array.isArray(this.middlewares)) throw new Error('The middlewares stack must be an array!')
+    if (!Array.isArray(this.middlewares)) throw new Error('The middlewares stack must be an array!');
     for (let fun of this.middlewares) {
-      if (typeof fun !== 'function') throw new Error('The middlewares  must be composed of functions!')
+      if (typeof fun !== 'function') throw new Error('The middlewares  must be composed of functions!');
     }
 
     debug(`==================> ${this.name}  start toPromises <===================`);
